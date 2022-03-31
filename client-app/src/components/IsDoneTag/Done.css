@@ -1,0 +1,11 @@
+.IsDone-icon , .IsNotDone-icon{
+    font-size: 30px;
+}
+
+.IsNotDone-icon{
+    color: red;
+}
+
+.IsDone-icon {
+    color: green;
+}
