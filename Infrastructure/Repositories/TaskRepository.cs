@@ -1,5 +1,6 @@
 ﻿using Application.Interfaces;
 using AutoMapper;
+using Domain.Exceptions;
 using Domain.Https.Dtos;
 using Domain.Https.QueryParameters;
 using Infrastructure.Data;
@@ -33,10 +34,6 @@ namespace Infrastructure.Repositories
         public async Task<Domain.Entities.Task?> DeleteTaskAsync(Guid Id)
         {
             var entity = await GetTaskByIdAsync(Id);
-            if (!entity.IsComplete)
-            {
-                //tutaj zrobić że jeśli status nie jest complete to poinformować, że nie można skasować tasku
-            }
             _dataContext.Tasks.Remove(entity);
             await _dataContext.SaveChangesAsync();
             return null;
@@ -72,20 +69,13 @@ namespace Infrastructure.Repositories
             var entity = await _dataContext.Tasks.FindAsync(Id);
             if (entity == null)
             {
-                //tutaj zrobić że jeśli nie ma to wyrzucamy error 404
+                throw new NotFoundException();
             }
             return entity;
         }
 
         public async Task<Domain.Entities.Task> UpdateTaskAsync(Guid Id , UpdateTaskDto task)
         {
-            /*
-            var entity = await _dataContext.Tasks.FindAsync(Id);
-            if(entity == null)
-            {
-                //tutaj zrobić że jeśli nie ma to wyrzucamy error 404
-            }
-            */
             var entity = await GetTaskByIdAsync(Id);
             _mapper.Map(task , entity);
             await _dataContext.SaveChangesAsync();
