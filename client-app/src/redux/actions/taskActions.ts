@@ -124,6 +124,7 @@ export const postTask = (postTask : PostTask) => async (dispatch: Dispatch) => {
 export const updateTask = (updateTask : UpdateTask , id : string) => async (dispatch: Dispatch) => {
 
     const tasksList = store.getState().tasks.tasksList;
+    const taskIsDoneFilter = store.getState().tasks.taskIsDoneFilter;
     let updatedTask: Task | null = null;
     let newTasksList: Task[] = [];
 
@@ -143,8 +144,15 @@ export const updateTask = (updateTask : UpdateTask , id : string) => async (disp
         tasksList[taskIndex].priority = updateTask.priority;
         tasksList[taskIndex].type = updateTask.type;
     }
-       
-    newTasksList = [ ...tasksList];
+    
+    let convertedIsDoneFilter = convertIsDoneFilter(taskIsDoneFilter);
+
+    if(taskIsDoneFilter !== null && updateTask.isComplete !== convertedIsDoneFilter){
+        newTasksList =  tasksList.filter(task => task.id !== id);  
+    }else{
+        newTasksList = [ ...tasksList];
+    }
+    
 
     dispatch({
         type: ActionTasksTypes.DELETE_TASK,
@@ -168,4 +176,13 @@ export const getTaskById = (id : string) => async (dispatch: Dispatch) => {
         payload : task
     })
     
+}
+
+function convertIsDoneFilter(isDoneFilter : string | null){
+    if(isDoneFilter === "")
+        return null;
+    if(isDoneFilter === "true")
+        return true;
+    if(isDoneFilter === "false")
+        return false;
 }

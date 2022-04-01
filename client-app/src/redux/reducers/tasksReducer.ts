@@ -31,7 +31,7 @@ export const tasksReducer = (state : ITaskState = initialState , action: Action 
         case ActionTasksTypes.SET_TYPE_FILTER:
             return{
                 ...state,
-                taskPriorityFilter: action.payload
+                taskTypeFilter: action.payload
             }
         case ActionTasksTypes.DELETE_TASK:
             return{

@@ -16,9 +16,10 @@ function App() {
         <Layout>
         <NavigationBar />
           <Routes>     
+              <Route path='*' element={<TaskList />} /> 
               <Route path="/" element={<TaskList />} />
               <Route path="/dodaj" element={<CreateTask />} />
-              <Route path="/edytuj/:id" element={<CreateTask />} />   
+              <Route path="/edytuj/:id" element={<CreateTask />} />      
           </Routes>
         </Layout>
       </Router>   
