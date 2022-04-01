@@ -1,6 +1,8 @@
 ﻿using Domain.Exceptions;
 using Domain.Https.Errors;
 using Microsoft.AspNetCore.Http;
+using NLog;
+using NLog.Web;
 using System.Net;
 using System.Text.Json;
 
@@ -8,6 +10,12 @@ namespace Presentation.Middlewares
 {
     public class ErrorHandlingMiddleware : IMiddleware
     {
+        private readonly Logger _logger;
+        public ErrorHandlingMiddleware()
+        {
+            _logger = LogManager.GetLogger("LoggerRules");
+        }
+
         public async Task InvokeAsync(HttpContext context, RequestDelegate next)
         {
             try
@@ -38,6 +46,8 @@ namespace Presentation.Middlewares
             var options = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
 
             var json = JsonSerializer.Serialize(response, options);
+
+            _logger.Error(e, "Error occured");
 
             await context.Response.WriteAsync(json);
         }
