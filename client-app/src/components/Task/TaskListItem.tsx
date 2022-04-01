@@ -5,9 +5,10 @@ import IsDone from '../IsDoneTag/IsDone';
 import IsNotDone from '../IsDoneTag/IsNotDone';
 import { Tooltip , message } from 'antd';
 import { Task, UpdateTask } from "../../models/Task";
-import { DeleteOutlined } from '@ant-design/icons';
+import { DeleteOutlined , FormOutlined } from '@ant-design/icons';
 import { useDispatch } from "react-redux";
 import { deleteTask , updateTask  } from "../../redux/actions/taskActions";
+import { Link } from "react-router-dom";
 
 interface Props {
     task: Task
@@ -60,7 +61,7 @@ export default function TaskListItem({ task } : Props){
     return(
 
         <React.Fragment>
-            <Card className={task.isComplete ? "Task-space-bottom Task-Complete" : "Task-space-bottom"} onClick={() => handleChangeTaskStatus(task)}>
+            <Card className={task.isComplete ? "Task-space-bottom Task-Complete" : "Task-space-bottom"}>
             <div className="Task-container">
                 <div>
                     <h4>Opis:</h4>
@@ -78,7 +79,7 @@ export default function TaskListItem({ task } : Props){
                             <Tag>{translateTypeName(task.type)}</Tag>
                         </Tooltip>
                     </div>
-                    <div>
+                    <div onClick={() => handleChangeTaskStatus(task)}>
                         { doneMark }
                     </div>
                     <div>
@@ -86,6 +87,11 @@ export default function TaskListItem({ task } : Props){
                         <DeleteOutlined className="Delete-icon" onClick={() => handleDeleteItem(task.id)}/>
                     </Tooltip>
                     </div>
+                    <Link to={`edytuj/${task.id}`} >
+                        <Tooltip placement="top" title={"Edytuj zadanie"} >
+                            <FormOutlined className="Edit-icon"/>
+                        </Tooltip> 
+                    </Link>
                 </Space>
                 </div>
             </div>

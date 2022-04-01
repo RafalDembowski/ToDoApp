@@ -1,10 +1,12 @@
-import React from 'react';
-import { Form, Input, message, Button, Space, Card , Select } from 'antd';
+import React , { useEffect , useState } from 'react';
+import { Form, Input, message, Button, Space, Card , Select , Spin } from 'antd';
 import './CreateTask.css';
-import { useDispatch } from "react-redux";
-import { postTask  } from "../../redux/actions/taskActions";
-import { PostTask } from '../../models/Task';
-import { useNavigate } from 'react-router-dom';
+import { useDispatch , useSelector } from "react-redux";
+import { postTask , updateTask  } from "../../redux/actions/taskActions";
+import { PostTask, Task, UpdateTask } from '../../models/Task';
+import { useNavigate , useParams } from 'react-router-dom';
+import { State } from '../../redux/reducers';
+import { LoadingOutlined } from '@ant-design/icons';
 
 export default function CreateTask(){
 
@@ -12,24 +14,73 @@ export default function CreateTask(){
     const disptach = useDispatch();
     const [form] = Form.useForm();
     const { Option } = Select;
+    const { id } = useParams<{ id: string }>();
+    const [ activeTask , setActiveTask ] = useState<Task>(new Task("" , "" , false , 1 , 1));
+    const [ loading, setLoading ] = useState<boolean>(false);
+    const [ editMode, setEditMode ] = useState<boolean>(false);
+    const tasksList = useSelector((state: State) => state.tasks.tasksList);
+    
+    useEffect(() => {
+        if(id){
+            setLoading(true);
+            setEditMode(true);
+            let task = tasksList.find(t => t.id === id);
+            console.log(task)
+            if(task){
+                setActiveTask(task)
+            }else{
+                //tutaj pobrać z api
+                //tutaj znowu if i jesli nie ma to powrócić do strony głównej
+            }
+            form.setFieldsValue({
+                description: task?.description,
+                priority: task?.priority.toString(),
+                type: task?.type.toString()
+
+            })
+            setLoading(false)
+        }
+    } , [])
+
+    useEffect(() => {
+    } , [activeTask])
 
     const onFinish = (values: any) => {
 
         try{
-            let createdTask = new PostTask(values.description , parseInt(values.priority) , parseInt(values.type));
-            disptach(postTask(createdTask));
+
+            if(!editMode){
+                let createdTask = new PostTask(values.description , parseInt(values.priority) , parseInt(values.type));
+                disptach(postTask(createdTask));
+            }else{
+                const taskToUpdate = new UpdateTask(values.description , activeTask.isComplete , parseInt(values.priority) , parseInt(values.type)); 
+                disptach(updateTask(taskToUpdate , activeTask.id));
+            }
+
         }catch(error){
-            message.error('Wystąpił błąd przy tworzeniu zadania!');
+            message.error('Wystąpił błąd!');
         }
         navigate("/");
         
     };
     
     const onFinishFailed = () => {
-        message.error('Nie udało się utworzyć!');
+        message.error('Wystąpił błąd!');
     };
+
+    const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
+
+    if(loading) return <Spin indicator={antIcon} />
     
     return(
+        <> 
+        {
+            loading &&
+            <Spin indicator={antIcon} />
+        }
+        {
+        !loading &&
+        
         <Card className="CreateTask-container">
             <Form
                 form={form}
@@ -38,15 +89,14 @@ export default function CreateTask(){
                 onFinishFailed={onFinishFailed}
                 autoComplete="off"
             >
-
+ 
             <Form.Item
                 name="description"
                 label="Opis"
                 rules={[{ required: true , message: 'Opis nie może być pusty!' } ]}
             >
-                <Input placeholder="Wpisz opis zadania" />
+                <Input placeholder="Wpisz opis zadania"/>
             </Form.Item>
-
             <Form.Item
                 name="priority"
                 label="Priorytet"
@@ -80,13 +130,24 @@ export default function CreateTask(){
 
             <Form.Item>
                 <Space>
+                    {
+                    !editMode &&
                     <Button type="primary" htmlType="submit">
                         Zapisz
                     </Button>
+                    }
+                    {
+                    editMode &&
+                    <Button type="primary" htmlType="submit">
+                        Zaaktualizuj
+                    </Button>
+                    }
                 </Space>
             </Form.Item>
 
             </Form>
         </Card>
+        }
+        </>
     )
 }

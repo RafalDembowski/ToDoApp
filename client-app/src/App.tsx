@@ -18,8 +18,7 @@ function App() {
           <Routes>     
               <Route path="/" element={<TaskList />} />
               <Route path="/dodaj" element={<CreateTask />} />
-              <Route path="/edytuj" element={<TaskList />} />
-              <Route path="/:id" element={<TaskList />} />    
+              <Route path="/edytuj/:id" element={<CreateTask />} />   
           </Routes>
         </Layout>
       </Router>   

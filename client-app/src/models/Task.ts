@@ -7,6 +7,19 @@ export interface Task {
 }
 
 export class Task implements Task {
+    id : string = "";
+    description : string = "";
+    isComplete : boolean = false;
+    priority : number = 0;
+    type : number = 0;
+
+    constructor(id: string,  description: string , isComplete : boolean , priority: number , type: number){
+        this.id = id;
+        this.description = description;
+        this.isComplete = isComplete;
+        this.priority = priority;
+        this.type = type;
+    }
 
 }
 
@@ -30,7 +43,7 @@ export class UpdateTask {
 
     constructor(description: string , isComplete: boolean,  priority: number , type: number){
         this.description = description;
-        this.isComplete = isComplete;
+        this.isComplete = isComplete
         this.priority = priority;
         this.type = type;
     }

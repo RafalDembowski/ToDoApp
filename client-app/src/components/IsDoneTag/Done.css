@@ -1,5 +1,6 @@
 .IsDone-icon , .IsNotDone-icon{
     font-size: 30px;
+    cursor: pointer;
 }
 
 .IsNotDone-icon{
