@@ -6,6 +6,7 @@ export interface ITaskState {
     taskTypeFilter: string | null,
     taskPriorityFilter: string | null;
     taskIsDoneFilter: string | null;
+    task : Task | null
 }
 
 interface TasksAction {

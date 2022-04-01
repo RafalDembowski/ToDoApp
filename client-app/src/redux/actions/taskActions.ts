@@ -152,3 +152,20 @@ export const updateTask = (updateTask : UpdateTask , id : string) => async (disp
     })
     
 }
+
+export const getTaskById = (id : string) => async (dispatch: Dispatch) => {
+
+    let task: Task | null = null;
+
+    try{
+        task = await agent.Tasks.getById(id);
+    }catch(error){
+        console.log(error)
+    }
+
+    dispatch({
+        type: ActionTasksTypes.GET_TASK,
+        payload : task
+    })
+    
+}

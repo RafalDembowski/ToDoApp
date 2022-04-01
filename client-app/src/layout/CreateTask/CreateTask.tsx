@@ -2,7 +2,7 @@ import React , { useEffect , useState } from 'react';
 import { Form, Input, message, Button, Space, Card , Select , Spin } from 'antd';
 import './CreateTask.css';
 import { useDispatch , useSelector } from "react-redux";
-import { postTask , updateTask  } from "../../redux/actions/taskActions";
+import { postTask , updateTask , getTaskById  } from "../../redux/actions/taskActions";
 import { PostTask, Task, UpdateTask } from '../../models/Task';
 import { useNavigate , useParams } from 'react-router-dom';
 import { State } from '../../redux/reducers';
@@ -12,12 +12,15 @@ export default function CreateTask(){
 
     let navigate = useNavigate();
     const disptach = useDispatch();
+    const task = useSelector((state: State) => state.tasks.task);
     const [form] = Form.useForm();
     const { Option } = Select;
     const { id } = useParams<{ id: string }>();
     const [ activeTask , setActiveTask ] = useState<Task>(new Task("" , "" , false , 1 , 1));
     const [ loading, setLoading ] = useState<boolean>(false);
     const [ editMode, setEditMode ] = useState<boolean>(false);
+    const [ isGetFromApi , setIsGetFromApi] = useState<boolean>(false);
+    
     const tasksList = useSelector((state: State) => state.tasks.tasksList);
     
     useEffect(() => {
@@ -25,12 +28,11 @@ export default function CreateTask(){
             setLoading(true);
             setEditMode(true);
             let task = tasksList.find(t => t.id === id);
-            console.log(task)
             if(task){
-                setActiveTask(task)
+                setActiveTask(task);
             }else{
-                //tutaj pobrać z api
-                //tutaj znowu if i jesli nie ma to powrócić do strony głównej
+                disptach(getTaskById(id));
+                setIsGetFromApi(true);
             }
             form.setFieldsValue({
                 description: task?.description,
@@ -39,11 +41,36 @@ export default function CreateTask(){
 
             })
             setLoading(false)
+        }else{
+            form.setFieldsValue({
+                description: null,
+                priority: null,
+                type: null
+            })
+            setEditMode(false);
         }
-    } , [])
+    } , [id])
 
     useEffect(() => {
     } , [activeTask])
+
+    useEffect(() => {
+        if(isGetFromApi){
+            if(task != null){
+                console.log(task);
+                setActiveTask(task);
+                form.setFieldsValue({
+                    description: task?.description,
+                    priority: task?.priority.toString(),
+                    type: task?.type.toString()
+    
+                })
+            }else{
+                message.error('Nie znaleziono podanego zadania!');
+                navigate("/");
+            }
+        }
+    }, [task])
 
     const onFinish = (values: any) => {
 

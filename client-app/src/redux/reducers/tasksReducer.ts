@@ -6,7 +6,8 @@ const initialState : ITaskState = {
     tasksList : [],
     taskPriorityFilter: null,
     taskTypeFilter: null,
-    taskIsDoneFilter: null
+    taskIsDoneFilter: null,
+    task: null
 }
 
 export const tasksReducer = (state : ITaskState = initialState , action: Action  )  => {
@@ -46,6 +47,11 @@ export const tasksReducer = (state : ITaskState = initialState , action: Action 
             return{
                 ...state,
                 tasksList: action.payload
+            }
+        case ActionTasksTypes.GET_TASK:
+            return{
+                ...state,
+                task: action.payload
             }
         default:
             return state
