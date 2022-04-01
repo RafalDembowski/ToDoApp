@@ -6,22 +6,24 @@ import './index.css';
 import TaskList from './layout/TaskList/TaskList';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import CreateTask from './layout/CreateTask/CreateTask';
+import { Provider } from "react-redux";
+import store from "./redux/store";
 
 function App() {
   return (
-    <>      
-    <Router>
-      <Layout>
-      <NavigationBar />
-        <Routes>     
-            <Route path="/" element={<TaskList />} />
-            <Route path="/dodaj" element={<CreateTask />} />
-            <Route path="/edytuj" element={<TaskList />} />
-            <Route path="/:id" element={<TaskList />} />    
-        </Routes>
-      </Layout>
-    </Router>   
-    </>
+    <Provider store={store}>      
+      <Router>
+        <Layout>
+        <NavigationBar />
+          <Routes>     
+              <Route path="/" element={<TaskList />} />
+              <Route path="/dodaj" element={<CreateTask />} />
+              <Route path="/edytuj" element={<TaskList />} />
+              <Route path="/:id" element={<TaskList />} />    
+          </Routes>
+        </Layout>
+      </Router>   
+    </Provider>
   );
 }
 
