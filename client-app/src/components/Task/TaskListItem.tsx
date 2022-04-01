@@ -52,7 +52,7 @@ export default function TaskListItem({ task } : Props){
     function handleChangeTaskStatus(task: Task){
         try{
             const taskToUpdate = new UpdateTask(task.description , !task.isComplete , task.priority , task.type); 
-            disptach(updateTask(taskToUpdate , task.id));
+            disptach(updateTask(taskToUpdate , task.id , "Status_change"));
         }catch(error){
             message.error('Wystąpił błąd przy zmianie statusu zadania!');
         }

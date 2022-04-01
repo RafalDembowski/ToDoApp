@@ -121,7 +121,7 @@ export const postTask = (postTask : PostTask) => async (dispatch: Dispatch) => {
     
 }
 
-export const updateTask = (updateTask : UpdateTask , id : string) => async (dispatch: Dispatch) => {
+export const updateTask = (updateTask : UpdateTask , id : string , type : string | null) => async (dispatch: Dispatch) => {
 
     const tasksList = store.getState().tasks.tasksList;
     const taskIsDoneFilter = store.getState().tasks.taskIsDoneFilter;
@@ -147,13 +147,17 @@ export const updateTask = (updateTask : UpdateTask , id : string) => async (disp
     
     let convertedIsDoneFilter = convertIsDoneFilter(taskIsDoneFilter);
 
-    if(taskIsDoneFilter !== null && updateTask.isComplete !== convertedIsDoneFilter){
-        newTasksList =  tasksList.filter(task => task.id !== id);  
+    if(type !== null && type === "Status_change"){
+        if(taskIsDoneFilter !== null && updateTask.isComplete !== convertedIsDoneFilter){
+            newTasksList =  tasksList.filter(task => task.id !== id);  
+        }else{
+            newTasksList = [ ...tasksList];
+        }
     }else{
         newTasksList = [ ...tasksList];
     }
-    
 
+    
     dispatch({
         type: ActionTasksTypes.DELETE_TASK,
         payload : newTasksList

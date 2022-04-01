@@ -81,7 +81,7 @@ export default function CreateTask(){
                 disptach(postTask(createdTask));
             }else{
                 const taskToUpdate = new UpdateTask(values.description , activeTask.isComplete , parseInt(values.priority) , parseInt(values.type)); 
-                disptach(updateTask(taskToUpdate , activeTask.id));
+                disptach(updateTask(taskToUpdate , activeTask.id , null));
             }
 
         }catch(error){
