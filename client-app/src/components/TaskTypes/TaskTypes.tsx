@@ -1,12 +1,17 @@
 import React from "react";
 import { Button , Space } from 'antd';
 import './TaskTypes.css';
+import { useDispatch } from "react-redux";
+import { setTypeFilter , getAllTasks } from "../../redux/actions/taskActions";
 
 export default function TaskTypes(){
+    
+    const disptach = useDispatch();
 
     function handleOnClick(event: React.MouseEvent<HTMLButtonElement>) {
         const button : HTMLButtonElement = event.currentTarget;
-        alert(button.value);
+        disptach(setTypeFilter(button.value));
+        disptach(getAllTasks());
     }
 
     return(

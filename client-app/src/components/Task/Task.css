@@ -17,3 +17,8 @@
 .Task-space-bottom{
     margin-bottom: 15px;
 }
+
+.Delete-icon {
+    font-size: 30px;
+    color: red;
+}

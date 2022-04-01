@@ -5,6 +5,9 @@ import IsDone from '../IsDoneTag/IsDone';
 import IsNotDone from '../IsDoneTag/IsNotDone';
 import { Tooltip } from 'antd';
 import { Task } from "../../models/Task";
+import { DeleteOutlined } from '@ant-design/icons';
+import { useDispatch } from "react-redux";
+import { deleteTask , getAllTasks } from "../../redux/actions/taskActions";
 
 interface Props {
     task: Task
@@ -13,6 +16,7 @@ interface Props {
 
 export default function TaskListItem({ task } : Props){
 
+    const disptach = useDispatch();
     const doneMark : JSX.Element = task.isComplete ? <IsDone /> : <IsNotDone />
 
     function translatePriorityName (numberOfPriority: number){
@@ -41,6 +45,10 @@ export default function TaskListItem({ task } : Props){
         }
     }
 
+    function handleDeleteItem(id: string) {
+        disptach(deleteTask(id));
+    }
+
     return(
 
         <React.Fragment>
@@ -64,6 +72,11 @@ export default function TaskListItem({ task } : Props){
                     </div>
                     <div>
                         { doneMark }
+                    </div>
+                    <div>
+                    <Tooltip placement="top" title={"Usuń zadanie"} >
+                        <DeleteOutlined className="Delete-icon" onClick={() => handleDeleteItem(task.id)}/>
+                    </Tooltip>
                     </div>
                 </Space>
                 </div>

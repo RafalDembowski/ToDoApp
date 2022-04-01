@@ -12,12 +12,14 @@ axios.interceptors.response.use(async response => {
 const responseBody = <T>(response: AxiosResponse<T>) => response.data;
 
 const requests = {
-    get: <T>(url: string) => axios.get<T>(url).then(responseBody)
+    get: <T>(url: string) => axios.get<T>(url).then(responseBody),
+    del: <T>(url: string) => axios.delete<T>(url).then(responseBody),
 }
 
 const Tasks = {
     list: (params: URLSearchParams) => axios.get<Task[]>('/api/Tasks', { params }).then(responseBody),
-    get: (id: string) => requests.get<Task>(`api/Tasks/${id}`)
+    get: (id: string) => requests.get<Task>(`api/Tasks/${id}`),
+    delete: (id: string) => requests.del<void>(`api/Tasks/${id}`)
 }
 
 const agent = {

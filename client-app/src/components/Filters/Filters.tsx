@@ -1,16 +1,21 @@
 import React from "react";
 import { Select , Space } from 'antd';
+import { useDispatch } from "react-redux";
+import { setPriorityFilter , setIsDoneFilter , getAllTasks } from "../../redux/actions/taskActions";
 
 export default function Filters(){
 
+    const disptach = useDispatch();
     const { Option } = Select;
 
     function handleChangeTaskPriorityFilter(value: string) {
-        alert(`selected ${value}`);
+        disptach(setPriorityFilter(value));
+        disptach(getAllTasks());
     }
 
     function handleChangeIsDoneFilter(value: string) {
-        alert(`selected ${value}`);
+        disptach(setIsDoneFilter(value));
+        disptach(getAllTasks());
     }
 
     return(

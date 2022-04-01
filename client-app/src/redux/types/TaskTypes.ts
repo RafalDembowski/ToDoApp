@@ -3,7 +3,10 @@ import { ActionTasksTypes } from "../constants/action-types";
 
 export interface ITaskState {
     tasksList: Task[],
-    task : Task | null
+    task : Task | null,
+    taskTypeFilter: string | null,
+    taskPriorityFilter: string | null;
+    taskIsDoneFilter: string | null;
 }
 
 interface TasksAction {
@@ -16,4 +19,24 @@ interface TaskAction {
     payload: Task
 }
 
-export type Action = TasksAction | TaskAction
+interface TaskTypeFilterAction{
+    type: ActionTasksTypes.SET_TYPE_FILTER
+    payload: string
+}
+
+interface TaskPriorityFilterAction{
+    type: ActionTasksTypes.SET_PRIORITY_FILTER
+    payload: string
+}
+
+interface TaskIsDoneFilterAction{
+    type: ActionTasksTypes.SET_IS_DONE_FILTER
+    payload: string
+}
+
+interface DeleteTaskAction{
+    type: ActionTasksTypes.DELETE_TASK
+    payload: Task[]
+}
+
+export type Action = TasksAction | TaskAction | TaskTypeFilterAction | TaskPriorityFilterAction | TaskIsDoneFilterAction | DeleteTaskAction
