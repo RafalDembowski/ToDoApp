@@ -7,12 +7,11 @@ import { Tooltip } from 'antd';
 import { Task } from "../../models/Task";
 import { DeleteOutlined } from '@ant-design/icons';
 import { useDispatch } from "react-redux";
-import { deleteTask , getAllTasks } from "../../redux/actions/taskActions";
+import { deleteTask  } from "../../redux/actions/taskActions";
 
 interface Props {
     task: Task
 }
-
 
 export default function TaskListItem({ task } : Props){
 

@@ -39,4 +39,9 @@ interface DeleteTaskAction{
     payload: Task[]
 }
 
-export type Action = TasksAction | TaskAction | TaskTypeFilterAction | TaskPriorityFilterAction | TaskIsDoneFilterAction | DeleteTaskAction
+interface PostTaskAction{
+    type: ActionTasksTypes.POST_TASK
+    payload: Task[]
+}
+
+export type Action = TasksAction | TaskAction | TaskTypeFilterAction | TaskPriorityFilterAction | TaskIsDoneFilterAction | DeleteTaskAction | PostTaskAction

@@ -38,6 +38,11 @@ export const tasksReducer = (state : ITaskState = initialState , action: Action 
                 ...state,
                 tasksList: action.payload
             }
+        case ActionTasksTypes.POST_TASK:
+            return{
+                ...state,
+                tasksList: action.payload
+            }
         default:
             return state
     }

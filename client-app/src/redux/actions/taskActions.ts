@@ -1,6 +1,6 @@
 import { Dispatch } from "redux";
 import agent from "../../api/agent";
-import { Task } from "../../models/Task";
+import { PostTask, Task } from "../../models/Task";
 import { ActionTasksTypes } from "../constants/action-types";
 import store from '../store';
 import { message } from 'antd';
@@ -85,6 +85,34 @@ export const deleteTask = (id : string) => async (dispatch: Dispatch) => {
     
     let newTasksList = tasksList.filter(task => task.id !== id);
 
+
+    dispatch({
+        type: ActionTasksTypes.DELETE_TASK,
+        payload : newTasksList
+    })
+    
+}
+
+export const postTask = (postTask : PostTask) => async (dispatch: Dispatch) => {
+
+    const tasksList = store.getState().tasks.tasksList;
+    const createdTask: Task | null = null;
+    let newTasksList: Task[] = [];
+
+    try{
+        const createdTask = await agent.Tasks.create(postTask);
+    }catch(error){
+        message.error('Wystąpił błąd przy tworzeniu zadania!');
+        console.log(error)
+    }
+
+    message.success('Poprawnie utworzono zadanie!');
+
+    if(createdTask !== null){
+        tasksList.push(createdTask);
+    }
+       
+    newTasksList = [ ...tasksList];
 
     dispatch({
         type: ActionTasksTypes.DELETE_TASK,
