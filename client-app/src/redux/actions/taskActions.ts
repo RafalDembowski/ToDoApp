@@ -148,7 +148,7 @@ export const updateTask = (updateTask : UpdateTask , id : string , type : string
     let convertedIsDoneFilter = convertIsDoneFilter(taskIsDoneFilter);
 
     if(type !== null && type === "Status_change"){
-        if(taskIsDoneFilter !== null && updateTask.isComplete !== convertedIsDoneFilter){
+        if(convertedIsDoneFilter !== null && updateTask.isComplete !== convertedIsDoneFilter){
             newTasksList =  tasksList.filter(task => task.id !== id);  
         }else{
             newTasksList = [ ...tasksList];
@@ -189,4 +189,6 @@ function convertIsDoneFilter(isDoneFilter : string | null){
         return true;
     if(isDoneFilter === "false")
         return false;
+    if(isDoneFilter === null)
+        return null;
 }
