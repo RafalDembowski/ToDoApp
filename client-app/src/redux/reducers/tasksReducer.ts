@@ -3,12 +3,13 @@ import { ActionTasksTypes } from "../constants/action-types";
 import { ITaskState, Action } from "../types/TaskTypes";
 
 const initialState : ITaskState = {
-    tasksList : new Map<string , Task>(),
+    tasksList : [],
     task : null
 }
 
 export const tasksReducer = (state : ITaskState = initialState , action: Action  )  => {
-    switch (action.type){
+
+    switch (action.type){     
         case ActionTasksTypes.GET_ALL_TASKS:
             return {
                 ...state,
@@ -17,4 +18,5 @@ export const tasksReducer = (state : ITaskState = initialState , action: Action 
         default:
             return state
     }
+
 }

@@ -2,13 +2,13 @@ import { Task } from "../../models/Task";
 import { ActionTasksTypes } from "../constants/action-types";
 
 export interface ITaskState {
-    tasksList: Map<string, Task>,
+    tasksList: Task[],
     task : Task | null
 }
 
 interface TasksAction {
     type: ActionTasksTypes.GET_ALL_TASKS
-    payload: Map<string, Task>
+    payload: Task[]
 }
 
 interface TaskAction {

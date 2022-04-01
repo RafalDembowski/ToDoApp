@@ -5,3 +5,7 @@ export interface Task {
     priority : number;
     type : number;
 }
+
+export class Task implements Task {
+
+}

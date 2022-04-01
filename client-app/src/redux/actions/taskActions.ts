@@ -1,12 +1,17 @@
 import { Dispatch } from "redux";
+import agent from "../../api/agent";
 import { Task } from "../../models/Task";
 import { ActionTasksTypes } from "../constants/action-types";
 
-export const getAllTasks = () => {
-    return (dispatch: Dispatch) => {
-        dispatch({
-            type: ActionTasksTypes.GET_ALL_TASKS,
-            payload : new Map<string , Task>()
-        })
-    }
+export const getAllTasks = () => async (dispatch: Dispatch) => {
+
+    const tasks = await agent.Tasks.list(new URLSearchParams());
+    
+    console.log(tasks);
+
+    dispatch({
+        type: ActionTasksTypes.GET_ALL_TASKS,
+        payload : tasks
+    })
+    
 }
