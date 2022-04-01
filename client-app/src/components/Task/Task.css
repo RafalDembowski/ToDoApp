@@ -12,6 +12,7 @@
     -webkit-box-align: center;
     -ms-flex-align: center;
     align-items: center;
+    cursor: pointer;
 }
 
 .Task-space-bottom{
@@ -21,4 +22,9 @@
 .Delete-icon {
     font-size: 30px;
     color: red;
+}
+
+.Task-Complete{
+    border-color: green;
+    background-color: #abff96;
 }

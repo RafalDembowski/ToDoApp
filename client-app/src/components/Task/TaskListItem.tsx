@@ -3,11 +3,11 @@ import { Tag , Space , Card } from 'antd';
 import './Task.css';
 import IsDone from '../IsDoneTag/IsDone';
 import IsNotDone from '../IsDoneTag/IsNotDone';
-import { Tooltip } from 'antd';
-import { Task } from "../../models/Task";
+import { Tooltip , message } from 'antd';
+import { Task, UpdateTask } from "../../models/Task";
 import { DeleteOutlined } from '@ant-design/icons';
 import { useDispatch } from "react-redux";
-import { deleteTask  } from "../../redux/actions/taskActions";
+import { deleteTask , updateTask  } from "../../redux/actions/taskActions";
 
 interface Props {
     task: Task
@@ -48,10 +48,19 @@ export default function TaskListItem({ task } : Props){
         disptach(deleteTask(id));
     }
 
+    function handleChangeTaskStatus(task: Task){
+        try{
+            const taskToUpdate = new UpdateTask(task.description , !task.isComplete , task.priority , task.type); 
+            disptach(updateTask(taskToUpdate , task.id));
+        }catch(error){
+            message.error('Wystąpił błąd przy zmianie statusu zadania!');
+        }
+    }
+
     return(
 
         <React.Fragment>
-            <Card className="Task-space-bottom">
+            <Card className={task.isComplete ? "Task-space-bottom Task-Complete" : "Task-space-bottom"} onClick={() => handleChangeTaskStatus(task)}>
             <div className="Task-container">
                 <div>
                     <h4>Opis:</h4>

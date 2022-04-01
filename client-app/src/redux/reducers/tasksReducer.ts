@@ -4,7 +4,6 @@ import { ITaskState, Action } from "../types/TaskTypes";
 
 const initialState : ITaskState = {
     tasksList : [],
-    task : null,
     taskPriorityFilter: null,
     taskTypeFilter: null,
     taskIsDoneFilter: null
@@ -39,6 +38,11 @@ export const tasksReducer = (state : ITaskState = initialState , action: Action 
                 tasksList: action.payload
             }
         case ActionTasksTypes.POST_TASK:
+            return{
+                ...state,
+                tasksList: action.payload
+            }
+        case ActionTasksTypes.UPDATE_TASK:
             return{
                 ...state,
                 tasksList: action.payload

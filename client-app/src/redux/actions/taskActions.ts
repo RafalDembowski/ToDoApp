@@ -1,6 +1,6 @@
 import { Dispatch } from "redux";
 import agent from "../../api/agent";
-import { PostTask, Task } from "../../models/Task";
+import { PostTask, Task, UpdateTask } from "../../models/Task";
 import { ActionTasksTypes } from "../constants/action-types";
 import store from '../store';
 import { message } from 'antd';
@@ -96,11 +96,11 @@ export const deleteTask = (id : string) => async (dispatch: Dispatch) => {
 export const postTask = (postTask : PostTask) => async (dispatch: Dispatch) => {
 
     const tasksList = store.getState().tasks.tasksList;
-    const createdTask: Task | null = null;
+    let createdTask: Task | null = null;
     let newTasksList: Task[] = [];
 
     try{
-        const createdTask = await agent.Tasks.create(postTask);
+        createdTask = await agent.Tasks.create(postTask);
     }catch(error){
         message.error('Wystąpił błąd przy tworzeniu zadania!');
         console.log(error)
@@ -110,6 +110,38 @@ export const postTask = (postTask : PostTask) => async (dispatch: Dispatch) => {
 
     if(createdTask !== null){
         tasksList.push(createdTask);
+    }
+       
+    newTasksList = [ ...tasksList];
+
+    dispatch({
+        type: ActionTasksTypes.DELETE_TASK,
+        payload : newTasksList
+    })
+    
+}
+
+export const updateTask = (updateTask : UpdateTask , id : string) => async (dispatch: Dispatch) => {
+
+    const tasksList = store.getState().tasks.tasksList;
+    let updatedTask: Task | null = null;
+    let newTasksList: Task[] = [];
+
+    try{
+        updatedTask = await agent.Tasks.update(updateTask , id);
+    }catch(error){
+        message.error('Wystąpił błąd przy edytowaniu zadania!');
+        console.log(error)
+    }
+
+    message.success('Poprawnie edytowano zadanie!');
+
+    if(updatedTask !== null){
+        let taskIndex = tasksList.findIndex((task => task.id === updatedTask?.id));
+        tasksList[taskIndex].description = updateTask.description;
+        tasksList[taskIndex].isComplete = updateTask.isComplete;
+        tasksList[taskIndex].priority = updateTask.priority;
+        tasksList[taskIndex].type = updateTask.type;
     }
        
     newTasksList = [ ...tasksList];

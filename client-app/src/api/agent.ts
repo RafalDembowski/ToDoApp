@@ -1,5 +1,5 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
-import { PostTask, Task } from "../models/Task";
+import { PostTask, Task, UpdateTask } from "../models/Task";
 
 axios.defaults.baseURL = 'https://localhost:44385'
 
@@ -14,7 +14,8 @@ const responseBody = <T>(response: AxiosResponse<T>) => response.data;
 const requests = {
     get: <T>(url: string) => axios.get<T>(url).then(responseBody),
     del: <T>(url: string) => axios.delete<T>(url).then(responseBody),
-    post: <T>(url: string, body: {}) => axios.post<T>(url, body).then(responseBody)
+    post: <T>(url: string, body: {}) => axios.post<T>(url, body).then(responseBody),
+    put: <T>(url: string, body: {}) => axios.put<T>(url, body).then(responseBody)
 }
 
 const Tasks = {
@@ -22,7 +23,8 @@ const Tasks = {
     get: (id: string) => requests.get<Task>(`api/Tasks/${id}`),
     delete: (id: string) => requests.del<void>(`api/Tasks/${id}`),
     create: (postTask: PostTask) => requests.post<Task>('api/Tasks', postTask),
-    getById: (id: string) => requests.get<Task>(`'api/Tasks/${id}`),
+    getById: (id: string) => requests.get<Task>(`api/Tasks/${id}`),
+    update: (updateTask: UpdateTask , id:string) => requests.put<Task>(`/api/Tasks/${id}`, updateTask)
 }
 
 const agent = {
