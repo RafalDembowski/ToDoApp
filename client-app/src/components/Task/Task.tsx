@@ -1,6 +1,5 @@
-import { Card } from 'antd';
 import React from "react";
-import { Tag , Space } from 'antd';
+import { Tag , Space , Card } from 'antd';
 import './Task.css';
 import IsDone from '../IsDoneTag/IsDone';
 import IsNotDone from '../IsDoneTag/IsNotDone';

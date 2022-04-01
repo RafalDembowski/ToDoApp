@@ -4,14 +4,23 @@ import Layout from './layout/Layout/Layout';
 import 'antd/dist/antd.css';
 import './index.css';
 import TaskList from './layout/TaskList/TaskList';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
+import CreateTask from './layout/CreateTask/CreateTask';
 
 function App() {
   return (
-    <>
+    <>      
+    <Router>
       <Layout>
-        <NavigationBar />
-        <TaskList />
+      <NavigationBar />
+        <Routes>     
+            <Route path="/" element={<TaskList />} />
+            <Route path="/dodaj" element={<CreateTask />} />
+            <Route path="/edytuj" element={<TaskList />} />
+            <Route path="/:id" element={<TaskList />} />    
+        </Routes>
       </Layout>
+    </Router>   
     </>
   );
 }
